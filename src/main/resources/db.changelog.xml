@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+ 
+     <changeSet author="ravi" id="changelog-1.0">
+        <createTable tableName="user">
+            <column name="mobile_no" type="VARCHAR(15)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="one_time_password" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="otp_req_time" type="datetime">
+                <constraints nullable="true"/>
+            </column>
+            <column name="active" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="role">
+        	<column name="id" type="binary(255)">
+        		<constraints nullable="false"/>
+        	</column>
+        	<column name="name" type="VARCHAR(255)">
+        		<constraints primaryKey="true" nullable="false"/>
+        	</column>
+        	<column name="description" type="VARCHAR(255)">
+        		<constraints nullable="false"/>
+        	</column>
+        </createTable>
+        <createTable tableName="USER_ROLES">
+        	<column name="user_mobile_no" type="VARCHAR(255)">
+        		<constraints primaryKey="true" nullable="false"/>
+        	</column>
+        	<column name="roles_name" type="VARCHAR(255)">
+        		<constraints primaryKey="true" nullable="false"/>
+        	</column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
