@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent any
     environment {
 		dockerHome = tool 'myDocker'
@@ -7,30 +7,36 @@ pipeline{
 	}
    
     stages{
-       stage('GetCode'){
-            steps{
-                git branch: 'feature/homescreen_entity_mapping',
-                url: 'https://bitbucket.org/r_kumar1/adminms.git'
-             sh "ls -lat"
-            
-                
-            }
-         }        
+       stage('Checkout') {
+			steps {
+				sh 'mvn --version'
+				sh 'docker version'
+				echo "Build"
+				echo "PATH - $PATH"
+				echo "BUILD_NUMBER - $env.BUILD_NUMBER"
+				echo "BUILD_ID - $env.BUILD_ID"
+				echo "JOB_NAME - $env.JOB_NAME"
+				echo "BUILD_TAG - $env.BUILD_TAG"
+				echo "BUILD_URL - $env.BUILD_URL"
+			}
+		}   
        stage('Build'){
             steps{
                 sh 'sudo mvn clean install'
-            }
-         }
-         stage('Deploy') {
-         steps{
-        //sh 'sudo cd /var/lib/jenkins/workspace/Backend_Application/target'
-        sh 'pwd'
-        sh 'sudo sh /var/lib/jenkins/workspace/admin_deploy.sh'
-        sh "sudo sshpass -p 'digi@2022' ssh digiusr@192.168.94.28 '/home/ADMINMS/myapp.sh'"
-         }
-    }
+             }
+          }
+       stage('Build Docker Image') {
+			steps {
+				
+				script {
+					dockerImage = docker.build("superapp/smsotpms_micro:${env.BUILD_TAG}")
+				}
+
+			}
+        
     }
 	
 
 
     }
+}
